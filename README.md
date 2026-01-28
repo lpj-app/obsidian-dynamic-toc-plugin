@@ -8,6 +8,7 @@ This means the table of contents stays **automatically updated** as you write, r
 ## Table of Contents
 
 - [ToC Generator for Obsidian](#toc-generator-for-obsidian)
+    - [Preview](#preview)
     - [Features](#features)
     - [Usage](#usage)
         - [Method 1: Manual Code Block](#method-1-manual-code-block)
@@ -16,6 +17,11 @@ This means the table of contents stays **automatically updated** as you write, r
     - [Settings](#settings)
     - [Installation](#installation)
     - [License](#license)
+
+## Preview
+https://github.com/user-attachments/assets/58662563-1c98-4256-b13b-f9b8e305ba46
+
+
 
 ## Features
 
