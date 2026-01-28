@@ -1,6 +1,6 @@
 {
-  "name": "insert-obsidian-toc",
-  "version": "1.0.0",
+  "name": "insert-dynamic-toc",
+  "version": "1.0.1",
   "description": "A simple Obsidian plugin to insert a table of contents into your notes.",
   "author": "Luca-Pascal Junge",
   "main": "main.js",
