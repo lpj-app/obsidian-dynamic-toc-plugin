@@ -24,14 +24,14 @@ class TocPlugin extends obsidian_1.Plugin {
             yield this.loadSettings();
             // 1. Settings
             this.addSettingTab(new TocSettingTab(this.app, this));
-            // 2. Register code block processor for auto updating the ToC
+            // 2. Register code block processor
             this.registerMarkdownCodeBlockProcessor("toc", (source, el, ctx) => {
-                this.renderToc(source, el, ctx);
+                void this.renderToc(source, el, ctx);
             });
             // 3. Command
             this.addCommand({
                 id: "insert-toc-block",
-                name: "Insert Dynamic Table of Contents",
+                name: "Insert dynamic table of contents",
                 editorCallback: (editor) => {
                     editor.replaceSelection("```toc\n```");
                 }
@@ -62,29 +62,21 @@ class TocPlugin extends obsidian_1.Plugin {
             }));
         });
     }
-    // Render code block for ToC
     renderToc(source, el, ctx) {
         return __awaiter(this, void 0, void 0, function* () {
-            // Get the file using the path from the context
             const cache = this.app.metadataCache.getCache(ctx.sourcePath);
             if (!(cache === null || cache === void 0 ? void 0 : cache.headings)) {
-                // No headings found
-                //el.createEl("p", { text: "No headings found.", cls: "toc-empty-notice" });
                 new obsidian_1.Notice(`No headings found in ${ctx.sourcePath}`);
                 return;
             }
-            // Build markdown list based on settings
             const markdownList = this.buildTocMarkdown(cache.headings);
             if (markdownList.length === 0) {
                 el.createEl("p", { text: "ToC empty (check settings).", cls: "toc-empty-notice" });
                 return;
             }
-            // Render the markdown list into the element
-            // Links will work now [[#Heading]]
             yield obsidian_1.MarkdownRenderer.render(this.app, markdownList, el, ctx.sourcePath, this);
         });
     }
-    // String builder
     buildTocMarkdown(headings) {
         let result = "";
         for (const h of headings) {
@@ -101,7 +93,6 @@ class TocPlugin extends obsidian_1.Plugin {
             if (h.level === 6 && !this.settings.showH6)
                 continue;
             const indent = "  ".repeat(h.level - 1);
-            // Obsidian syntax for internal links
             const link = h.heading;
             result += `${indent}- [[#${link}]]\n`;
         }
@@ -119,7 +110,6 @@ class TocPlugin extends obsidian_1.Plugin {
     }
 }
 exports.default = TocPlugin;
-// Settings
 class TocSettingTab extends obsidian_1.PluginSettingTab {
     constructor(app, plugin) {
         super(app, plugin);
@@ -128,79 +118,113 @@ class TocSettingTab extends obsidian_1.PluginSettingTab {
     display() {
         const { containerEl } = this;
         containerEl.empty();
-        // Header
-        containerEl.createEl('strong', { text: 'Dynamic Table of Contents' });
+        // 1. Header
+        new obsidian_1.Setting(containerEl)
+            .setName('Dynamic table of contents')
+            .setHeading();
         containerEl.createEl('p', {
-            text: 'This plugin generates a dynamic table of contents based on your document structure. The ToC updates automatically in Reading Mode.'
+            text: 'This plugin generates a dynamic table of contents based on your document structure. The ToC updates automatically in reading mode.'
         });
-        // Settings
-        containerEl.createEl('strong', { text: 'Heading Configuration' });
+        // 2. Settings
+        new obsidian_1.Setting(containerEl)
+            .setName('Heading configuration')
+            .setHeading();
         containerEl.createEl('div', {
             text: 'Select which heading levels should be included in the generated table of contents:',
             cls: 'setting-item-description'
         });
         new obsidian_1.Setting(containerEl)
-            .setName('Include Level 1 (H1)')
+            .setName('Include level 1 (H1)')
             .setDesc('Main document titles')
-            .addToggle(t => t.setValue(this.plugin.settings.showH1).onChange((v) => __awaiter(this, void 0, void 0, function* () { this.plugin.settings.showH1 = v; yield this.plugin.saveSettings(); })));
+            .addToggle(t => t
+            .setValue(this.plugin.settings.showH1)
+            .onChange((v) => __awaiter(this, void 0, void 0, function* () {
+            this.plugin.settings.showH1 = v;
+            yield this.plugin.saveSettings();
+        })));
         new obsidian_1.Setting(containerEl)
-            .setName('Include Level 2 (H2)')
+            .setName('Include level 2 (H2)')
             .setDesc('Major sections')
-            .addToggle(t => t.setValue(this.plugin.settings.showH2).onChange((v) => __awaiter(this, void 0, void 0, function* () { this.plugin.settings.showH2 = v; yield this.plugin.saveSettings(); })));
+            .addToggle(t => t
+            .setValue(this.plugin.settings.showH2)
+            .onChange((v) => __awaiter(this, void 0, void 0, function* () {
+            this.plugin.settings.showH2 = v;
+            yield this.plugin.saveSettings();
+        })));
         new obsidian_1.Setting(containerEl)
-            .setName('Include Level 3 (H3)')
+            .setName('Include level 3 (H3)')
             .setDesc('Subsections')
-            .addToggle(t => t.setValue(this.plugin.settings.showH3).onChange((v) => __awaiter(this, void 0, void 0, function* () { this.plugin.settings.showH3 = v; yield this.plugin.saveSettings(); })));
+            .addToggle(t => t
+            .setValue(this.plugin.settings.showH3)
+            .onChange((v) => __awaiter(this, void 0, void 0, function* () {
+            this.plugin.settings.showH3 = v;
+            yield this.plugin.saveSettings();
+        })));
         new obsidian_1.Setting(containerEl)
-            .setName('Include Level 4 (H4)')
-            .addToggle(t => t.setValue(this.plugin.settings.showH4).onChange((v) => __awaiter(this, void 0, void 0, function* () { this.plugin.settings.showH4 = v; yield this.plugin.saveSettings(); })));
+            .setName('Include level 4 (H4)')
+            .addToggle(t => t
+            .setValue(this.plugin.settings.showH4)
+            .onChange((v) => __awaiter(this, void 0, void 0, function* () {
+            this.plugin.settings.showH4 = v;
+            yield this.plugin.saveSettings();
+        })));
         new obsidian_1.Setting(containerEl)
-            .setName('Include Level 5 (H5)')
-            .addToggle(t => t.setValue(this.plugin.settings.showH5).onChange((v) => __awaiter(this, void 0, void 0, function* () { this.plugin.settings.showH5 = v; yield this.plugin.saveSettings(); })));
+            .setName('Include level 5 (H5)')
+            .addToggle(t => t
+            .setValue(this.plugin.settings.showH5)
+            .onChange((v) => __awaiter(this, void 0, void 0, function* () {
+            this.plugin.settings.showH5 = v;
+            yield this.plugin.saveSettings();
+        })));
         new obsidian_1.Setting(containerEl)
-            .setName('Include Level 6 (H6)')
-            .addToggle(t => t.setValue(this.plugin.settings.showH6).onChange((v) => __awaiter(this, void 0, void 0, function* () { this.plugin.settings.showH6 = v; yield this.plugin.saveSettings(); })));
+            .setName('Include level 6 (H6)')
+            .addToggle(t => t
+            .setValue(this.plugin.settings.showH6)
+            .onChange((v) => __awaiter(this, void 0, void 0, function* () {
+            this.plugin.settings.showH6 = v;
+            yield this.plugin.saveSettings();
+        })));
+        // 3. Demo Video
         const demoContainer = containerEl.createDiv({ cls: 'toc-demo-container' });
-        const video = demoContainer.createEl('video', {
+        demoContainer.createEl('video', {
             attr: {
                 src: 'https://private-user-images.githubusercontent.com/56166718/541665589-58662563-1c98-4256-b13b-f9b8e305ba46.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Njk2MTE3OTYsIm5iZiI6MTc2OTYxMTQ5NiwicGF0aCI6Ii81NjE2NjcxOC81NDE2NjU1ODktNTg2NjI1NjMtMWM5OC00MjU2LWIxM2ItZjliOGUzMDViYTQ2Lm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAxMjglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMTI4VDE0NDQ1NlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWRiZjk5ZmZkNzUzODFmYWU4ZWZkMTE0M2IxOTZjZTQwOTExN2M0NWFiMWI1YjhmNzUzNzNmNmNmZjhhZjg1NDImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.YsdEhJIBLLS2NVVdzSS8ZmV8Ko-WKnlyeT1cz2TRLXg',
                 controls: '',
                 autoplay: '',
                 loop: '',
                 muted: ''
-            }
+            },
+            cls: 'toc-demo-video'
         });
-        video.style.maxWidth = '100%';
-        // Usage
+        // 4. Usage
         containerEl.createEl('hr');
-        containerEl.createEl('h1', { text: 'Usage Guide' });
+        new obsidian_1.Setting(containerEl)
+            .setName('Usage guide')
+            .setHeading();
         const usageContainer = containerEl.createDiv();
         // Method 1
-        usageContainer.createEl('h3', { text: 'Method 1: Command Palette' });
+        usageContainer.createEl('h3', { text: 'Method 1: Command palette' });
         const ul1 = usageContainer.createEl('ul');
         ul1.createEl('li', { text: 'Open the Command Palette (Ctrl/Cmd + P).' });
-        ul1.createEl('li', { text: 'Search for "Insert Dynamic Table of Contents".' });
+        ul1.createEl('li', { text: 'Search for "Insert dynamic table of contents".' });
         // Method 2
-        usageContainer.createEl('h3', { text: 'Method 2: File Menu' });
+        usageContainer.createEl('h3', { text: 'Method 2: File menu' });
         const ul2 = usageContainer.createEl('ul');
         ul2.createEl('li', { text: 'Click the 3 dots (options) on the top right of your note.' });
-        ul2.createEl('li', { text: 'Select "Insert Dynamic ToC".' });
-        ul2.createEl('li', { text: 'If you do this from the File Explorer, the ToC is added to the top of the file.' });
+        ul2.createEl('li', { text: 'Select "Insert dynamic ToC".' });
+        ul2.createEl('li', { text: 'If you do this from the file explorer, the ToC is added to the top of the file.' });
         // Method 3
-        usageContainer.createEl('h3', { text: 'Method 3: Manual Code Block' });
+        usageContainer.createEl('h3', { text: 'Method 3: Manual code block' });
         const pManual = usageContainer.createEl('p');
         pManual.setText('Simply type the following code block anywhere in your note:');
         // Code Block preview
         const pre = usageContainer.createEl('pre');
         pre.createEl('code', { text: '```toc\n```' });
-        // Footer
+        // 5. Footer
         containerEl.createEl('hr');
         const footer = containerEl.createDiv({ cls: 'toc-settings-footer' });
-        footer.style.textAlign = 'center';
-        footer.style.marginTop = '20px';
-        footer.style.color = 'var(--text-muted)';
         footer.createSpan({ text: 'Find this plugin on ' });
-        const link = footer.createEl('a', {
+        footer.createEl('a', {
             text: 'GitHub Repository',
             href: 'https://github.com/lpj.app/obsidian-dynamic-toc-plugin'
         });
