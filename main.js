@@ -160,6 +160,17 @@ class TocSettingTab extends obsidian_1.PluginSettingTab {
         new obsidian_1.Setting(containerEl)
             .setName('Include Level 6 (H6)')
             .addToggle(t => t.setValue(this.plugin.settings.showH6).onChange((v) => __awaiter(this, void 0, void 0, function* () { this.plugin.settings.showH6 = v; yield this.plugin.saveSettings(); })));
+        const demoContainer = containerEl.createDiv({ cls: 'toc-demo-container' });
+        const video = demoContainer.createEl('video', {
+            attr: {
+                src: 'https://private-user-images.githubusercontent.com/56166718/541665589-58662563-1c98-4256-b13b-f9b8e305ba46.mp4?jwt=eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJnaXRodWIuY29tIiwiYXVkIjoicmF3LmdpdGh1YnVzZXJjb250ZW50LmNvbSIsImtleSI6ImtleTUiLCJleHAiOjE3Njk2MTE3OTYsIm5iZiI6MTc2OTYxMTQ5NiwicGF0aCI6Ii81NjE2NjcxOC81NDE2NjU1ODktNTg2NjI1NjMtMWM5OC00MjU2LWIxM2ItZjliOGUzMDViYTQ2Lm1wND9YLUFtei1BbGdvcml0aG09QVdTNC1ITUFDLVNIQTI1NiZYLUFtei1DcmVkZW50aWFsPUFLSUFWQ09EWUxTQTUzUFFLNFpBJTJGMjAyNjAxMjglMkZ1cy1lYXN0LTElMkZzMyUyRmF3czRfcmVxdWVzdCZYLUFtei1EYXRlPTIwMjYwMTI4VDE0NDQ1NlomWC1BbXotRXhwaXJlcz0zMDAmWC1BbXotU2lnbmF0dXJlPWRiZjk5ZmZkNzUzODFmYWU4ZWZkMTE0M2IxOTZjZTQwOTExN2M0NWFiMWI1YjhmNzUzNzNmNmNmZjhhZjg1NDImWC1BbXotU2lnbmVkSGVhZGVycz1ob3N0In0.YsdEhJIBLLS2NVVdzSS8ZmV8Ko-WKnlyeT1cz2TRLXg',
+                controls: '',
+                autoplay: '',
+                loop: '',
+                muted: ''
+            }
+        });
+        video.style.maxWidth = '100%';
         // Usage
         containerEl.createEl('hr');
         containerEl.createEl('h1', { text: 'Usage Guide' });
