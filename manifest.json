@@ -1,0 +1,11 @@
+{
+  "id": "insert-obsidian-toc",
+  "name": "ToC Generator",
+  "version": "1.0.0",
+  "minAppVersion": "0.15.0",
+  "description": "A simple Obsidian plugin to insert a table of contents into your notes.",
+  "author": "Luca-Pascal Junge",
+    "authorUrl": "lpj.app",
+    "repo": "https://github.com/lpj-app/obsidian-dynamic-toc-plugin",
+  "isDesktopOnly": true
+}
