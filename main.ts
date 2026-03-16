@@ -60,7 +60,7 @@ export default class TocPlugin extends Plugin {
                 if (file instanceof TFile && file.extension === 'md') {
                     menu.addItem((item) => {
                         item
-                            .setTitle("Insert ToC")
+                            .setTitle("Insert dynamic toc")
                             .setIcon("list")
                             .onClick(async () => {
                                 const activeView = this.app.workspace.getActiveViewOfType(MarkdownView);
@@ -73,7 +73,7 @@ export default class TocPlugin extends Plugin {
                                     await this.app.vault.process(file, (data) => {
                                         return tocBlock + data;
                                     });
-                                    new Notice(`Dynamic ToC added to ${file.basename}`);
+                                    new Notice(`Dynamic toc added to ${file.basename}`);
                                 }
                             });
                     });
@@ -93,7 +93,7 @@ export default class TocPlugin extends Plugin {
         const markdownList = this.buildTocMarkdown(cache.headings);
 
         if (markdownList.length === 0) {
-            el.createEl("p", { text: "ToC empty (check settings).", cls: "toc-empty-notice" });
+            el.createEl("p", { text: "Table of contents is empty (check settings).", cls: "toc-empty-notice" });
             return;
         }
 
@@ -102,7 +102,7 @@ export default class TocPlugin extends Plugin {
             markdownList,
             el,
             ctx.sourcePath,
-            this
+            null
         );
     }
 
@@ -152,7 +152,7 @@ class TocSettingTab extends PluginSettingTab {
             .setHeading();
 
         containerEl.createEl('p', {
-            text: 'This plugin generates a dynamic table of contents based on your document structure. The ToC updates automatically in reading mode.'
+            text: 'This plugin generates a dynamic table of contents based on your document structure. The table of contents updates automatically in reading mode.'
         });
 
         // 2. Settings
@@ -241,28 +241,32 @@ class TocSettingTab extends PluginSettingTab {
             .setName('Usage guide')
             .setHeading();
 
-        const usageContainer = containerEl.createDiv();
-
         // Method 1
-        usageContainer.createEl('h3', { text: 'Method 1: Command palette' });
-        const ul1 = usageContainer.createEl('ul');
+        new Setting(containerEl)
+            .setName('Method 1: Command palette')
+            .setHeading();
+        const ul1 = containerEl.createEl('ul');
         ul1.createEl('li', { text: 'Open the Command Palette (Ctrl/Cmd + P).' });
         ul1.createEl('li', { text: 'Search for "Insert dynamic table of contents".' });
 
         // Method 2
-        usageContainer.createEl('h3', { text: 'Method 2: File menu' });
-        const ul2 = usageContainer.createEl('ul');
+        new Setting(containerEl)
+            .setName('Method 2: File menu')
+            .setHeading();
+        const ul2 = containerEl.createEl('ul');
         ul2.createEl('li', { text: 'Click the 3 dots (options) on the top right of your note.' });
-        ul2.createEl('li', { text: 'Select "Insert dynamic ToC".' });
-        ul2.createEl('li', { text: 'If you do this from the file explorer, the ToC is added to the top of the file.' });
+        ul2.createEl('li', { text: 'Select "Insert dynamic toc".' });
+        ul2.createEl('li', { text: 'If you do this from the file explorer, the toc is added to the top of the file.' });
 
         // Method 3
-        usageContainer.createEl('h3', { text: 'Method 3: Manual code block' });
-        const pManual = usageContainer.createEl('p');
+        new Setting(containerEl)
+            .setName('Method 3: Manual code block')
+            .setHeading();
+        const pManual = containerEl.createEl('p');
         pManual.setText('Simply type the following code block anywhere in your note:');
 
         // Code Block preview
-        const pre = usageContainer.createEl('pre');
+        const pre = containerEl.createEl('pre');
         pre.createEl('code', { text: '```toc\n```' });
 
         // 5. Footer

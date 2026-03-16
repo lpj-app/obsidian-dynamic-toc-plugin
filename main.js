@@ -41,7 +41,7 @@ class TocPlugin extends obsidian_1.Plugin {
                 if (file instanceof obsidian_1.TFile && file.extension === 'md') {
                     menu.addItem((item) => {
                         item
-                            .setTitle("Insert ToC")
+                            .setTitle("Insert dynamic toc")
                             .setIcon("list")
                             .onClick(() => __awaiter(this, void 0, void 0, function* () {
                             const activeView = this.app.workspace.getActiveViewOfType(obsidian_1.MarkdownView);
@@ -54,7 +54,7 @@ class TocPlugin extends obsidian_1.Plugin {
                                 yield this.app.vault.process(file, (data) => {
                                     return tocBlock + data;
                                 });
-                                new obsidian_1.Notice(`Dynamic ToC added to ${file.basename}`);
+                                new obsidian_1.Notice(`Dynamic toc added to ${file.basename}`);
                             }
                         }));
                     });
@@ -71,10 +71,10 @@ class TocPlugin extends obsidian_1.Plugin {
             }
             const markdownList = this.buildTocMarkdown(cache.headings);
             if (markdownList.length === 0) {
-                el.createEl("p", { text: "ToC empty (check settings).", cls: "toc-empty-notice" });
+                el.createEl("p", { text: "Table of contents is empty (check settings).", cls: "toc-empty-notice" });
                 return;
             }
-            yield obsidian_1.MarkdownRenderer.render(this.app, markdownList, el, ctx.sourcePath, this);
+            yield obsidian_1.MarkdownRenderer.render(this.app, markdownList, el, ctx.sourcePath, null);
         });
     }
     buildTocMarkdown(headings) {
@@ -123,7 +123,7 @@ class TocSettingTab extends obsidian_1.PluginSettingTab {
             .setName('Dynamic table of contents')
             .setHeading();
         containerEl.createEl('p', {
-            text: 'This plugin generates a dynamic table of contents based on your document structure. The ToC updates automatically in reading mode.'
+            text: 'This plugin generates a dynamic table of contents based on your document structure. The table of contents updates automatically in reading mode.'
         });
         // 2. Settings
         new obsidian_1.Setting(containerEl)
@@ -201,24 +201,29 @@ class TocSettingTab extends obsidian_1.PluginSettingTab {
         new obsidian_1.Setting(containerEl)
             .setName('Usage guide')
             .setHeading();
-        const usageContainer = containerEl.createDiv();
         // Method 1
-        usageContainer.createEl('h3', { text: 'Method 1: Command palette' });
-        const ul1 = usageContainer.createEl('ul');
+        new obsidian_1.Setting(containerEl)
+            .setName('Method 1: Command palette')
+            .setHeading();
+        const ul1 = containerEl.createEl('ul');
         ul1.createEl('li', { text: 'Open the Command Palette (Ctrl/Cmd + P).' });
         ul1.createEl('li', { text: 'Search for "Insert dynamic table of contents".' });
         // Method 2
-        usageContainer.createEl('h3', { text: 'Method 2: File menu' });
-        const ul2 = usageContainer.createEl('ul');
+        new obsidian_1.Setting(containerEl)
+            .setName('Method 2: File menu')
+            .setHeading();
+        const ul2 = containerEl.createEl('ul');
         ul2.createEl('li', { text: 'Click the 3 dots (options) on the top right of your note.' });
-        ul2.createEl('li', { text: 'Select "Insert dynamic ToC".' });
-        ul2.createEl('li', { text: 'If you do this from the file explorer, the ToC is added to the top of the file.' });
+        ul2.createEl('li', { text: 'Select "Insert dynamic toc".' });
+        ul2.createEl('li', { text: 'If you do this from the file explorer, the toc is added to the top of the file.' });
         // Method 3
-        usageContainer.createEl('h3', { text: 'Method 3: Manual code block' });
-        const pManual = usageContainer.createEl('p');
+        new obsidian_1.Setting(containerEl)
+            .setName('Method 3: Manual code block')
+            .setHeading();
+        const pManual = containerEl.createEl('p');
         pManual.setText('Simply type the following code block anywhere in your note:');
         // Code Block preview
-        const pre = usageContainer.createEl('pre');
+        const pre = containerEl.createEl('pre');
         pre.createEl('code', { text: '```toc\n```' });
         // 5. Footer
         containerEl.createEl('hr');

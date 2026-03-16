@@ -45,8 +45,8 @@ Simply type the following code block anywhere in your note:
 3. Press Enter to insert the block at your cursor.
 
 ### Method 3: File Menu / Context Menu
-- **Inside a note:** Click the 3-dots menu (top right) -> `Insert ToC`.
-- **File Explorer:** Right-click any Markdown file -> `Insert ToC`. *This will add the ToC to the very beginning of the file.*
+- **Inside a note:** Click the 3-dots menu (top right) -> `Insert dynamic toc`.
+- **File Explorer:** Right-click any Markdown file -> `Insert dynamic toc`. *This will add the toc to the very beginning of the file.*
 
 ## Settings
 
